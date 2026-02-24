@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const techStack = [
-  'Vue.js', 'Nuxt', 'TypeScript', 'React', 'Node.js',
-  'Tailwind CSS', 'PostgreSQL', 'Docker', 'Linux', 'AWS', 'Git',
+  'Vue.js', 'Nuxt', 'TypeScript', 'Node.js', 'Bun',
+  'Tailwind CSS', 'SQLite', 'Firebase', 'Docker', 'Linux', 'Git', 'Cloudflare',
 ]
 </script>
 
@@ -66,13 +66,13 @@ const techStack = [
                 <span class="text-emerald-600 dark:text-emerald-400">role</span>: <span class="text-amber-600 dark:text-amber-400">'IT Specialist'</span>,
               </p>
               <p class="pl-4">
-                <span class="text-emerald-600 dark:text-emerald-400">email</span>: <span class="text-amber-600 dark:text-amber-400">'daniel@develit.io'</span>,
+                <span class="text-emerald-600 dark:text-emerald-400">email</span>: <span class="text-amber-600 dark:text-amber-400">'daniel@kleindaniel.com'</span>,
               </p>
               <p class="pl-4">
                 <span class="text-emerald-600 dark:text-emerald-400">available</span>: <span class="text-blue-500">true</span>,
               </p>
               <p class="pl-4">
-                <span class="text-emerald-600 dark:text-emerald-400">coffee</span>: <span class="text-amber-600 dark:text-amber-400">'always'</span>
+                <span class="text-emerald-600 dark:text-emerald-400">kombucha</span>: <span class="text-amber-600 dark:text-amber-400">'always'</span>
               </p>
               <p>}</p>
             </div>

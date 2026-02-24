@@ -3,14 +3,14 @@ const services = [
   {
     icon: 'i-lucide-code-2',
     title: 'Webový vývoj',
-    description: 'Moderní webové aplikace a stránky na míru. Vue.js, Nuxt, React, Node.js — vyberu to nejlepší pro váš projekt.',
-    features: ['SPA & SSR aplikace', 'REST & GraphQL API', 'Responzivní design'],
+    description: 'Moderní webové aplikace a stránky na míru. Vue.js, Nuxt, TypeScript, Node.js — vyberu to nejlepší pro váš projekt.',
+    features: ['SPA & SSR aplikace', 'REST API', 'Responzivní design'],
   },
   {
-    icon: 'i-lucide-server',
-    title: 'Infrastruktura & DevOps',
-    description: 'Nastavení, správa a optimalizace serverové infrastruktury. Cloud i on-premise řešení pro spolehlivý provoz.',
-    features: ['Linux servery', 'Docker & CI/CD', 'Monitoring & zálohování'],
+    icon: 'i-lucide-cloud',
+    title: 'Cloud & DevOps',
+    description: 'Cloudová infrastruktura na Cloudflare, CI/CD pipeline a automatizace. Moderní serverless přístup pro spolehlivý provoz.',
+    features: ['Cloudflare Workers & Pages', 'Docker & CI/CD', 'Serverless architektury'],
   },
   {
     icon: 'i-lucide-shield-check',
@@ -22,7 +22,7 @@ const services = [
     icon: 'i-lucide-database',
     title: 'Databáze & Data',
     description: 'Návrh, optimalizace a správa databázových systémů. Od relačních databází po moderní NoSQL řešení.',
-    features: ['PostgreSQL & MySQL', 'Optimalizace dotazů', 'Migrace dat'],
+    features: ['SQLite & Firebase', 'Optimalizace dotazů', 'Migrace dat'],
   },
 ]
 </script>

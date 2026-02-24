@@ -19,7 +19,7 @@ function handleSubmit() {
 }
 
 const contactInfo = [
-  { icon: 'i-lucide-mail', label: 'Email', value: 'daniel@develit.io', href: 'mailto:daniel@develit.io' },
+  { icon: 'i-lucide-mail', label: 'Email', value: 'daniel@kleindaniel.com', href: 'mailto:daniel@kleindaniel.com' },
   { icon: 'i-lucide-map-pin', label: 'Lokace', value: 'Česká republika', href: null },
   { icon: 'i-lucide-clock', label: 'Dostupnost', value: 'Po—Pá, 9:00—18:00', href: null },
 ]

@@ -8,7 +8,7 @@
     <div class="absolute bottom-20 left-1/4 w-72 h-72 bg-blue-600/8 dark:bg-blue-400/5 rounded-full blur-3xl"/>
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-      <div class="max-w-3xl">
+      <div>
         <!-- Badge -->
         <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-200/50 dark:border-blue-800/50 mb-8">
           <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"/>
@@ -30,7 +30,7 @@
           IT Specialist
         </p>
 
-        <p class="text-base sm:text-lg text-slate-500 dark:text-slate-400 mb-10 max-w-xl leading-relaxed">
+        <p class="text-base sm:text-lg text-slate-500 dark:text-slate-400 mb-10 max-w-2xl leading-relaxed">
           Navrhuji a realizuji IT řešení na míru. Od webových aplikací, přes správu infrastruktury až po konzultace — pomůžu vám s technologiemi, které fungují.
         </p>
 
