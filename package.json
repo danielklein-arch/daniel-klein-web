@@ -1,0 +1,25 @@
+{
+  "name": "daniel-klein-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "release": "bun run build && bunx wrangler deploy",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@nuxt/fonts": "^0.14.0",
+    "@nuxt/icon": "^2.2.1",
+    "@nuxt/ui": "^4.4.0",
+    "nuxt": "^4.3.1"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^1.15.2"
+  }
+}
