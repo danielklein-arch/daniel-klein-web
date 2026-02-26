@@ -36,10 +36,11 @@ const socials = [
           </a>
         </div>
 
-        <!-- Copyright -->
-        <p class="text-sm text-slate-400 dark:text-slate-500">
-          &copy; {{ currentYear }} Daniel Klein. Všechna práva vyhrazena.
-        </p>
+        <!-- Copyright & Legal -->
+        <div class="text-sm text-slate-400 dark:text-slate-500 text-center md:text-right">
+          <p>IČO: 17389178</p>
+          <p>&copy; {{ currentYear }} Daniel Klein. Všechna práva vyhrazena.</p>
+        </div>
       </div>
     </div>
   </footer>
