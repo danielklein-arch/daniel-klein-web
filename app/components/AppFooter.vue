@@ -2,8 +2,8 @@
 const currentYear = new Date().getFullYear()
 
 const socials = [
-  { icon: 'i-lucide-github', href: '#', label: 'GitHub' },
-  { icon: 'i-lucide-linkedin', href: '#', label: 'LinkedIn' },
+  { icon: 'i-lucide-github', href: 'https://github.com/danielklein-arch', label: 'GitHub' },
+  { icon: 'i-lucide-linkedin', href: 'https://www.linkedin.com/in/daniel-klein-2578061b8/', label: 'LinkedIn' },
   { icon: 'i-lucide-mail', href: 'mailto:daniel@kleindaniel.com', label: 'Email' },
 ]
 </script>
