@@ -44,7 +44,7 @@ const mobileOpen = ref(false)
           </a>
 
           <button
-            class="ml-2 p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            class="ml-2 p-2 rounded-lg inline-flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
             :aria-label="colorMode.value === 'dark' ? 'Světlý režim' : 'Tmavý režim'"
             @click="toggleColorMode">
             <UIcon
@@ -56,14 +56,14 @@ const mobileOpen = ref(false)
         <!-- Mobile toggle -->
         <div class="flex items-center gap-2 md:hidden">
           <button
-            class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            class="p-2 rounded-lg inline-flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
             @click="toggleColorMode">
             <UIcon
               :name="colorMode.value === 'dark' ? 'i-lucide-sun' : 'i-lucide-moon'"
               class="w-5 h-5"/>
           </button>
           <button
-            class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            class="p-2 rounded-lg inline-flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
             @click="mobileOpen = !mobileOpen">
             <UIcon
               :name="mobileOpen ? 'i-lucide-x' : 'i-lucide-menu'"

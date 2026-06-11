@@ -40,7 +40,7 @@ const contactInfo = [
         <!-- Contact info -->
         <div
           v-reveal
-          class="lg:col-span-2 space-y-6">
+          class="lg:col-span-2 flex flex-col gap-6">
           <div
             v-for="info in contactInfo"
             :key="info.label"
@@ -69,7 +69,7 @@ const contactInfo = [
           </div>
 
           <!-- CTA card -->
-          <div class="mt-8 p-6 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-600 text-white">
+          <div class="mt-auto p-6 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-600 text-white">
             <h3 class="font-semibold mb-2">
               Rychlá konzultace zdarma
             </h3>

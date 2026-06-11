@@ -10,7 +10,7 @@ const socials = [
 
 <template>
   <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-dk-bg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-7 pb-6">
       <div class="flex flex-col md:flex-row items-center justify-between gap-6">
         <!-- Logo -->
         <div class="text-base">

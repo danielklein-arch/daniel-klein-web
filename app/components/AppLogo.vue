@@ -8,10 +8,10 @@ withDefaults(defineProps<{
 
 <template>
   <span class="inline-flex items-center gap-[0.55em]">
-    <!-- viewBox padded top by the shadow height so the letters are optically centered -->
+    <!-- viewBox padded by half the shadow height — optical center between letters and full ink -->
     <svg
-      viewBox="0 -9 162.1 85"
-      class="h-[1.6em] w-auto"
+      viewBox="0 -4.5 162.1 80.5"
+      class="h-[1.55em] w-auto"
       :class="{ 'dk-glow': glow }"
       aria-label="DK">
       <defs>

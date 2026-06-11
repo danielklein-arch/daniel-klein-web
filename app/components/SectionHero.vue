@@ -63,6 +63,10 @@ onBeforeUnmount(() => {
       class="absolute -right-24 sm:-right-12 lg:right-[4%] top-1/2 -translate-y-1/2 rotate-[-6deg] pointer-events-none select-none opacity-[0.10] dark:opacity-[0.16] text-[16rem] sm:text-[22rem] lg:text-[26rem] will-change-transform"
       aria-hidden="true">
       <AppLogo/>
+      <!-- anchor for ScrollGlowLine: bottom leg of the K -->
+      <span
+        id="dk-line-anchor"
+        class="absolute left-[88%] top-[82%] w-px h-px"/>
     </div>
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full">

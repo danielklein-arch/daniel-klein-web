@@ -9,12 +9,12 @@
           v-reveal
           class="relative">
           <span
-            class="absolute top-7 -left-2 font-display font-bold text-[6.5rem] sm:text-[8rem] leading-none select-none text-transparent [-webkit-text-stroke:1.5px_#e2e8f0] dark:[-webkit-text-stroke:1.5px_#1e293b]"
+            class="absolute -top-8 sm:-top-10 -left-2 font-display font-bold text-[5rem] sm:text-[6rem] leading-none select-none text-transparent [-webkit-text-stroke:1.5px_#e2e8f0] dark:[-webkit-text-stroke:1.5px_#1e293b]"
             aria-hidden="true">01</span>
           <p class="relative z-10 text-sm font-mono font-medium text-blue-600 dark:text-cyan-400 tracking-widest uppercase mb-4">
             <span class="opacity-50">//</span> O mně
           </p>
-          <h2 class="relative z-10 text-4xl sm:text-5xl font-display font-semibold tracking-tight text-slate-900 dark:text-white mb-6 pt-4 leading-tight">
+          <h2 class="relative z-10 text-4xl sm:text-5xl font-display font-semibold tracking-tight text-slate-900 dark:text-white mb-6 pt-6 leading-tight">
             Technologie, které dávají
             <span class="bg-gradient-to-br from-blue-600 to-cyan-600 dark:from-blue-500 dark:to-cyan-400 bg-clip-text text-transparent">smysl</span>
           </h2>
