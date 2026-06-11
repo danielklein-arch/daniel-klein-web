@@ -5,7 +5,6 @@ const links = [
   { label: 'O mně', to: '#about' },
   { label: 'Služby', to: '#services' },
   { label: 'Projekty', to: '#projects' },
-  { label: 'Reference', to: '#testimonials' },
   { label: 'Kontakt', to: '#contact' },
 ]
 
@@ -19,20 +18,15 @@ const mobileOpen = ref(false)
 <template>
   <header
     class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl
-      bg-white/80 dark:bg-slate-950/80
+      bg-white/80 dark:bg-dk-bg/80
       border-b border-slate-200/50 dark:border-slate-800/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
         <a
           href="#"
-          class="flex items-center gap-1 group">
-          <span
-            class="text-lg font-extralight tracking-[0.2em]
-              text-slate-700 dark:text-slate-300
-              group-hover:text-slate-900
-              dark:group-hover:text-white transition">DANIEL</span>
-          <span class="text-lg font-bold tracking-[0.2em] text-blue-600 dark:text-blue-400">KLEIN</span>
+          class="text-lg flex items-center h-full">
+          <AppLogo show-name/>
         </a>
 
         <!-- Desktop Nav -->

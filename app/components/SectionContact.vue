@@ -28,24 +28,19 @@ const contactInfo = [
 <template>
   <section
     id="contact"
-    class="py-24 sm:py-32 bg-slate-50/50 dark:bg-slate-900/30">
+    class="py-24 sm:py-32 bg-slate-50/50 dark:bg-dk-surface/40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- Header -->
-      <div class="text-center max-w-2xl mx-auto mb-16">
-        <p class="text-sm font-medium text-blue-600 dark:text-blue-400 tracking-widest uppercase mb-4">
-          Kontakt
-        </p>
-        <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">
-          Pojďme spolupracovat
-        </h2>
-        <p class="text-slate-500 dark:text-slate-400">
-          Máte projekt nebo nápad? Napište mi a probere to.
-        </p>
-      </div>
+      <SectionHeading
+        index="04"
+        label="Kontakt"
+        title="Pojďme spolupracovat"
+        description="Máte projekt nebo nápad? Napište mi a probereme to."/>
 
       <div class="grid lg:grid-cols-5 gap-12">
         <!-- Contact info -->
-        <div class="lg:col-span-2 space-y-6">
+        <div
+          v-reveal
+          class="lg:col-span-2 space-y-6">
           <div
             v-for="info in contactInfo"
             :key="info.label"
@@ -74,7 +69,7 @@ const contactInfo = [
           </div>
 
           <!-- CTA card -->
-          <div class="mt-8 p-6 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 text-white">
+          <div class="mt-8 p-6 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-600 text-white">
             <h3 class="font-semibold mb-2">
               Rychlá konzultace zdarma
             </h3>
@@ -85,7 +80,9 @@ const contactInfo = [
         </div>
 
         <!-- Form -->
-        <div class="lg:col-span-3">
+        <div
+          v-reveal="{ delay: 150 }"
+          class="lg:col-span-3">
           <form
             class="rounded-2xl bg-white dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 p-8 space-y-6"
             @submit.prevent="handleSubmit">
@@ -131,7 +128,7 @@ const contactInfo = [
                 size="lg"
                 color="primary"
                 :disabled="submitted"
-                class="px-8">
+                class="px-8 bg-gradient-to-br from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white dark:text-dk-bg font-semibold">
                 <template v-if="submitted">
                   <UIcon
                     name="i-lucide-check"

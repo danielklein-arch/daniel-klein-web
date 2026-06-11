@@ -1,6 +1,16 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+@theme {
+  --font-sans: 'General Sans', sans-serif;
+  --font-display: 'Clash Display', sans-serif;
+
+  /* brand */
+  --color-dk-bg: #070b14;
+  --color-dk-surface: #0d1320;
+  --color-dk-shadow: #0f2547;
+}
+
 :root {
   --color-blue-50: #eff6ff;
   --color-blue-100: #dbeafe;
@@ -20,5 +30,45 @@ html {
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'General Sans', sans-serif;
+}
+
+/* cyan glow for the monogram — dark mode only (spec: glow jen digitál/dark) */
+.dark .dk-glow {
+  filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.45));
+}
+
+/* v-reveal scroll entrances */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* hero load-in (no intersection needed above the fold) */
+@keyframes dk-hero-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+.hero-in {
+  opacity: 0;
+  animation: dk-hero-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* tech stack marquee */
+@keyframes dk-marquee {
+  to { transform: translateX(-50%); }
+}
+.dk-marquee {
+  animation: dk-marquee 36s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .hero-in { opacity: 1; animation: none; }
+  .dk-marquee { animation: none; }
 }

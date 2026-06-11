@@ -9,13 +9,12 @@ const socials = [
 </script>
 
 <template>
-  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-dk-bg">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="flex flex-col md:flex-row items-center justify-between gap-6">
         <!-- Logo -->
-        <div class="flex items-center gap-1">
-          <span class="text-base font-extralight tracking-[0.2em] text-slate-500 dark:text-slate-400">DANIEL</span>
-          <span class="text-base font-bold tracking-[0.2em] text-blue-600 dark:text-blue-400">KLEIN</span>
+        <div class="text-base">
+          <AppLogo show-name/>
         </div>
 
         <!-- Socials -->

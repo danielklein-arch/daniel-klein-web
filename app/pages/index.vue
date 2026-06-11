@@ -5,12 +5,15 @@ useHead({
 </script>
 
 <template>
-  <div>
-    <SectionHero/>
-    <SectionAbout/>
-    <SectionServices/>
-    <SectionProjects/>
-    <SectionTestimonials/>
-    <SectionContact/>
+  <div class="relative">
+    <ScrollGlowLine/>
+    <div class="relative">
+      <SectionHero/>
+      <SectionStack/>
+      <SectionAbout/>
+      <SectionServices/>
+      <SectionProjects/>
+      <SectionContact/>
+    </div>
   </div>
 </template>
