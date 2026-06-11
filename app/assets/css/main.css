@@ -38,6 +38,23 @@ body {
   filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.45));
 }
 
+/* logo intro: letters fade in, shadow slides out (AppLogo animated prop) */
+.dk-animated .dk-logo-letters {
+  opacity: 0;
+  animation: dk-logo-fill 0.6s ease 0.1s forwards;
+}
+.dk-animated .dk-logo-shadow {
+  opacity: 0;
+  transform: translate(0, 0);
+  animation: dk-logo-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
+}
+@keyframes dk-logo-fill {
+  to { opacity: 1; }
+}
+@keyframes dk-logo-shadow {
+  to { opacity: 1; transform: translate(6px, 9px); }
+}
+
 /* v-reveal scroll entrances */
 .reveal {
   opacity: 0;
@@ -71,4 +88,6 @@ body {
   .reveal { opacity: 1; transform: none; transition: none; }
   .hero-in { opacity: 1; animation: none; }
   .dk-marquee { animation: none; }
+  .dk-animated .dk-logo-letters { opacity: 1; animation: none; }
+  .dk-animated .dk-logo-shadow { opacity: 1; transform: translate(6px, 9px); animation: none; }
 }

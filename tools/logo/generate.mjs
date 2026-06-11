@@ -2,121 +2,12 @@
 // Usage: bun tools/logo/generate.mjs <outDir> [--png]
 // Spec: docs/superpowers/specs/2026-06-11-brand-identity-design.md
 
-import { mkdirSync, writeFileSync, readFileSync } from 'node:fs'
+import { mkdirSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import opentype from 'opentype.js'
+import { fonts, C, glyphPath, textLayout, pathData, bbox, monogram, svgDoc } from './lib.mjs'
 
-const here = dirname(fileURLToPath(import.meta.url))
 const outDir = process.argv[2] ?? 'brand-drafts'
 const wantPng = process.argv.includes('--png')
-
-const loadFont = rel => opentype.parse(readFileSync(join(here, rel)).buffer)
-const fonts = {
-  clash700: loadFont('fonts/ClashDisplay-700.ttf'),
-  clash600: loadFont('fonts/ClashDisplay-600.ttf'),
-  general600: loadFont('fonts/GeneralSans-600.ttf'),
-}
-
-const C = {
-  bgDark: '#070b14',
-  tileDark: '#0d1320',
-  dark: { d: ['#3b82f6', '#22d3ee'], k: ['#22d3ee', '#67e8f9'], shadow: '#0f2547', text: '#f1f5f9', muted: '#64748b' },
-  light: { d: ['#2563eb', '#0891b2'], k: ['#0891b2', '#06b6d4'], shadow: '#dbeafe', text: '#0f172a', muted: '#64748b' },
-  glow: 'rgba(34,211,238,.4)',
-}
-
-// --- text layout helpers (manual per-glyph positioning, tracking in px) ---
-
-function glyphPath(font, char, size, x, y) {
-  return font.getPath(char, x, y, size, { kerning: false })
-}
-
-function textLayout(font, text, size, tracking = 0) {
-  // returns { paths: [{char, path}], width } with chars laid out left to right
-  let x = 0
-  const paths = []
-  let prev = null
-  for (const char of text) {
-    const glyph = font.charToGlyph(char)
-    if (prev) x += (font.getKerningValue(prev, glyph) / font.unitsPerEm) * size
-    paths.push({ char, path: glyphPath(font, char, size, x, 0) })
-    x += (glyph.advanceWidth / font.unitsPerEm) * size + tracking
-    prev = glyph
-  }
-  return { paths, width: x - tracking }
-}
-
-function pathData(path) {
-  return path.toPathData(2)
-}
-
-function bbox(paths) {
-  let x1 = Infinity, y1 = Infinity, x2 = -Infinity, y2 = -Infinity
-  for (const p of paths) {
-    const b = p.getBoundingBox()
-    x1 = Math.min(x1, b.x1); y1 = Math.min(y1, b.y1)
-    x2 = Math.max(x2, b.x2); y2 = Math.max(y2, b.y2)
-  }
-  return { x1, y1, x2, y2, w: x2 - x1, h: y2 - y1 }
-}
-
-// --- monogram ---
-// size = font size of DK; returns group markup + metrics, origin at bbox top-left
-
-// glow: only for raster outputs (OG) — browsers rasterize SVG filters at low res,
-// on the web the glow is applied via CSS drop-shadow instead
-function monogram(theme, size, { shadow = true, glow = false, mono = null, idPrefix = 'm' } = {}) {
-  const t = C[theme] ?? C.dark
-  const gap = size * 0.10
-  const dxs = size * 0.06
-  const dys = size * 0.09
-
-  const dPath = glyphPath(fonts.clash700, 'D', size, 0, 0)
-  const dAdv = (fonts.clash700.charToGlyph('D').advanceWidth / fonts.clash700.unitsPerEm) * size
-  const kPath = glyphPath(fonts.clash700, 'K', size, dAdv + gap, 0)
-  const box = bbox([dPath, kPath])
-
-  const dD = pathData(dPath)
-  const dK = pathData(kPath)
-  const pad = glow ? size * 0.25 : 0
-  const w = box.w + (shadow ? dxs : 0) + pad * 2
-  const h = box.h + (shadow ? dys : 0) + pad * 2
-  // translate so bbox top-left lands at (pad, pad)
-  const tx = -box.x1 + pad
-  const ty = -box.y1 + pad
-
-  let defs = ''
-  let dFill, kFill
-  if (mono) {
-    dFill = kFill = mono
-  }
-  else {
-    defs += `<linearGradient id="${idPrefix}-d" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${t.d[0]}"/><stop offset="1" stop-color="${t.d[1]}"/></linearGradient>`
-    defs += `<linearGradient id="${idPrefix}-k" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${t.k[0]}"/><stop offset="1" stop-color="${t.k[1]}"/></linearGradient>`
-    dFill = `url(#${idPrefix}-d)`
-    kFill = `url(#${idPrefix}-k)`
-  }
-  if (glow && !mono) {
-    defs += `<filter id="${idPrefix}-glow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="0" stdDeviation="${(size * 0.07).toFixed(1)}" flood-color="${C.glow}"/></filter>`
-  }
-
-  let g = `<g transform="translate(${tx.toFixed(2)},${ty.toFixed(2)})">`
-  if (shadow && !mono) {
-    g += `<g fill="${t.shadow}" transform="translate(${dxs.toFixed(2)},${dys.toFixed(2)})"><path d="${dD}"/><path d="${dK}"/></g>`
-  }
-  g += `<g${glow && !mono ? ` filter="url(#${idPrefix}-glow)"` : ''}><path fill="${dFill}" d="${dD}"/><path fill="${kFill}" d="${dK}"/></g>`
-  g += '</g>'
-
-  return { defs, g, w, h, pad }
-}
-
-function svgDoc(w, h, defs, body, bg = null) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w.toFixed(0)} ${h.toFixed(0)}" width="${w.toFixed(0)}" height="${h.toFixed(0)}">
-<defs>${defs}</defs>
-${bg ? `<rect width="100%" height="100%" fill="${bg}"/>` : ''}${body}
-</svg>`
-}
 
 // --- variants ---
 
@@ -186,6 +77,60 @@ function monoSvg(color) {
   return svgDoc(m.w, m.h, m.defs, m.g)
 }
 
+function animatedIconSvg() {
+  // draw sequence: outline stroke → gradient fill → shadow slides out → glow pulse
+  const size = 200
+  const gap = size * 0.10
+  const dxs = size * 0.06
+  const dys = size * 0.09
+  const dPath = glyphPath(fonts.clash700, 'D', size, 0, 0)
+  const dAdv = (fonts.clash700.charToGlyph('D').advanceWidth / fonts.clash700.unitsPerEm) * size
+  const kPath = glyphPath(fonts.clash700, 'K', size, dAdv + gap, 0)
+  const box = bbox([dPath, kPath])
+  const pad = size * 0.25
+  const w = box.w + dxs + 2 * pad
+  const h = box.h + dys + 2 * pad
+  const dD = pathData(dPath)
+  const dK = pathData(kPath)
+  const t = C.dark
+
+  const defs
+    = `<linearGradient id="ag-d" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${t.d[0]}"/><stop offset="1" stop-color="${t.d[1]}"/></linearGradient>`
+      + `<linearGradient id="ag-k" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${t.k[0]}"/><stop offset="1" stop-color="${t.k[1]}"/></linearGradient>`
+
+  const style = `<style>
+    .stroke path { fill: none; stroke-width: 2.5; stroke-dasharray: 1; stroke-dashoffset: 1; animation: dk-draw 1.2s ease-in-out forwards; }
+    .stroke path:nth-child(2) { animation-delay: .2s; }
+    .fill { opacity: 0; animation: dk-fill .7s ease 1.1s forwards; }
+    .shadow { opacity: 0; transform: translate(0, 0); animation: dk-shadow .6s cubic-bezier(.22,1,.36,1) 1.5s forwards; }
+    .glow { opacity: 0; animation: dk-glowin .8s ease 1.8s forwards, dk-pulse 3.2s ease-in-out 2.6s infinite; }
+    @keyframes dk-draw { to { stroke-dashoffset: 0; } }
+    @keyframes dk-fill { to { opacity: 1; } }
+    @keyframes dk-shadow { to { opacity: 1; transform: translate(${dxs}px, ${dys}px); } }
+    @keyframes dk-glowin { to { opacity: .55; } }
+    @keyframes dk-pulse { 0%, 100% { opacity: .55; } 50% { opacity: .25; } }
+    @media (prefers-reduced-motion: reduce) {
+      .stroke path { animation: none; stroke-dashoffset: 0; }
+      .fill { animation: none; opacity: 1; }
+      .shadow { animation: none; opacity: 1; transform: translate(${dxs}px, ${dys}px); }
+      .glow { animation: none; opacity: .45; }
+    }
+  </style>`
+
+  const tx = -box.x1 + pad
+  const ty = -box.y1 + pad
+  const letters = `<path d="${dD}"/><path d="${dK}"/>`
+  const lettersFilled = `<path fill="url(#ag-d)" d="${dD}"/><path fill="url(#ag-k)" d="${dK}"/>`
+  const body
+    = `${style}<g transform="translate(${tx.toFixed(2)},${ty.toFixed(2)})">`
+      + `<g class="shadow" fill="${t.shadow}">${letters}</g>`
+      + `<g class="glow" style="filter: blur(${(size * 0.07).toFixed(0)}px)">${lettersFilled}</g>`
+      + `<g class="fill">${lettersFilled}</g>`
+      + `<g class="stroke"><path pathLength="1" stroke="url(#ag-d)" d="${dD}"/><path pathLength="1" stroke="url(#ag-k)" d="${dK}"/></g>`
+      + '</g>'
+  return svgDoc(w, h, defs, body)
+}
+
 // --- output ---
 
 const files = {
@@ -193,6 +138,7 @@ const files = {
   'logo-icon/dk-icon-light.svg': iconSvg('light'),
   'logo-icon/dk-icon-tile-dark.svg': tileSvg('dark'),
   'logo-icon/dk-icon-tile-gradient.svg': tileSvg('gradient'),
+  'logo-icon/dk-icon-animated.svg': animatedIconSvg(),
   'logo-compact/dk-compact-dark.svg': compactSvg('dark'),
   'logo-compact/dk-compact-light.svg': compactSvg('light'),
   'logo-full/dk-full-dark.svg': fullSvg('dark'),
@@ -249,14 +195,14 @@ if (wantPng) {
     console.log('wrote', join(favDir, `favicon-${s}.png`))
   }
 
-  // OG image 1200x630 — dark bg, full lockup centered
-  const og = (() => {
-    const m = monogram('dark', 200, { glow: true, idPrefix: 'og' })
-    const name = textLayout(fonts.clash600, 'Daniel Klein', 86)
+  // social cards — dark bg, full lockup centered (OG, GitHub social preview)
+  const socialCard = (W, H, mSize = 200) => {
+    const m = monogram('dark', mSize, { glow: true, idPrefix: 'og' })
+    const name = textLayout(fonts.clash600, 'Daniel Klein', mSize * 0.43)
     const nameBox = bbox(name.paths.map(p => p.path))
-    const tag = textLayout(fonts.general600, 'IT SPECIALISTA', 34, 14)
+    const tag = textLayout(fonts.general600, 'IT SPECIALISTA', mSize * 0.17, mSize * 0.07)
     const tagBox = bbox(tag.paths.map(p => p.path))
-    const W = 1200, H = 630, cx = W / 2
+    const cx = W / 2
     const blockH = (m.h - 2 * m.pad) + 48 + nameBox.h + 30 + tagBox.h
     const top = (H - blockH) / 2
     const body
@@ -264,9 +210,41 @@ if (wantPng) {
         + `<g fill="${C.dark.text}" transform="translate(${(cx - name.width / 2).toFixed(2)},${(top + (m.h - 2 * m.pad) + 48 - nameBox.y1).toFixed(2)})">${name.paths.map(p => `<path d="${pathData(p.path)}"/>`).join('')}</g>`
         + `<g fill="${C.dark.muted}" transform="translate(${(cx - tag.width / 2).toFixed(2)},${(top + (m.h - 2 * m.pad) + 48 + nameBox.h + 30 - tagBox.y1).toFixed(2)})">${tag.paths.map(p => `<path d="${pathData(p.path)}"/>`).join('')}</g>`
     return svgDoc(W, H, m.defs, body, C.bgDark)
-  })()
-  writeFileSync(join(outDir, 'og-image.png'), render(og, 1200))
+  }
+  mkdirSync(join(outDir, 'social'), { recursive: true })
+  writeFileSync(join(outDir, 'og-image.png'), render(socialCard(1200, 630), 1200))
   console.log('wrote', join(outDir, 'og-image.png'))
+  writeFileSync(join(outDir, 'social/github-social-preview.png'), render(socialCard(1280, 640), 1280))
+  console.log('wrote', join(outDir, 'social/github-social-preview.png'))
+
+  // LinkedIn banner 1584×396 — lockup right of center, left clear for the avatar overlap
+  const banner = (() => {
+    const W = 1584, H = 396
+    const m = monogram('dark', 150, { glow: true, idPrefix: 'bn' })
+    const name = textLayout(fonts.clash600, 'Daniel Klein', 64)
+    const nameBox = bbox(name.paths.map(p => p.path))
+    const tag = textLayout(fonts.general600, 'IT SPECIALISTA · KLEINDANIEL.COM', 20, 7)
+    const tagBox = bbox(tag.paths.map(p => p.path))
+    const gap = 44
+    const blockW = (m.w - 2 * m.pad) + gap + Math.max(name.width, tag.width)
+    const left = W * 0.58 - blockW / 2
+    const my = (H - (m.h - 2 * m.pad)) / 2
+    const textX = left + (m.w - 2 * m.pad) + gap
+    const textBlockH = nameBox.h + 18 + tagBox.h
+    const nameY = (H - textBlockH) / 2 - nameBox.y1
+    const tagY = (H - textBlockH) / 2 + nameBox.h + 18 - tagBox.y1
+    const body
+      = `<g transform="translate(${(left - m.pad).toFixed(2)},${(my - m.pad).toFixed(2)})">${m.g}</g>`
+        + `<g fill="${C.dark.text}" transform="translate(${textX.toFixed(2)},${nameY.toFixed(2)})">${name.paths.map(p => `<path d="${pathData(p.path)}"/>`).join('')}</g>`
+        + `<g fill="${C.dark.muted}" transform="translate(${textX.toFixed(2)},${tagY.toFixed(2)})">${tag.paths.map(p => `<path d="${pathData(p.path)}"/>`).join('')}</g>`
+    return svgDoc(W, H, m.defs, body, C.bgDark)
+  })()
+  writeFileSync(join(outDir, 'social/linkedin-banner@2x.png'), render(banner, 3168))
+  console.log('wrote', join(outDir, 'social/linkedin-banner@2x.png'))
+
+  // email signature logo — compact light, small
+  writeFileSync(join(outDir, 'png/sig-logo.png'), render(compactSvg('light'), 480))
+  console.log('wrote', join(outDir, 'png/sig-logo.png'))
 
   // faktura 420x140 — exact canvas, light bg, compact lockup centered
   const faktura = (() => {

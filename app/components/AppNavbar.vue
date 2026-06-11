@@ -26,7 +26,9 @@ const mobileOpen = ref(false)
         <a
           href="#"
           class="text-lg flex items-center h-full">
-          <AppLogo show-name/>
+          <AppLogo
+            show-name
+            animated/>
         </a>
 
         <!-- Desktop Nav -->

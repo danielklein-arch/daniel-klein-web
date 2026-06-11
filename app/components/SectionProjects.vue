@@ -8,6 +8,7 @@ const projects = [
     description: 'Dvojjazyčný brand web pro českého výrobce standardizovaných rostlinných tinktur. Produktové detaily, laboratorní galerie, SSR rendering — vše na Cloudflare Workers.',
     tags: ['Nuxt 4', 'TypeScript', 'Cloudflare Workers', 'SSR'],
     color: 'from-blue-500 to-cyan-500',
+    image: '/projects/modulabs.jpg',
   },
   {
     title: 'Pampeliška',
@@ -17,6 +18,7 @@ const projects = [
     description: 'Kompletní web pro neziskovou pečovatelskou službu včetně vlastního headless CMS — správa aktualit, týmu a kontaktů, formuláře přes Email Workers.',
     tags: ['Nuxt 4', 'SonicJS + Hono', 'Cloudflare D1 & R2', 'Email Workers'],
     color: 'from-cyan-500 to-blue-600',
+    image: '/projects/pampeliska.jpg',
   },
 ]
 </script>
@@ -59,6 +61,17 @@ const projects = [
 
           <!-- Visual strip -->
           <div :class="['h-2 bg-gradient-to-r', project.color]"/>
+
+          <!-- Screenshot -->
+          <div class="h-52 overflow-hidden border-b border-slate-100 dark:border-slate-800">
+            <img
+              :src="project.image"
+              :alt="`${project.title} — náhled webu`"
+              loading="lazy"
+              width="1200"
+              height="750"
+              class="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-500">
+          </div>
 
           <!-- Content -->
           <div class="p-8">
