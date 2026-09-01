@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-white dark:bg-dk-bg text-slate-900 dark:text-slate-100">
+  <div class="min-h-screen text-(--dk-ink)">
     <AppNavbar/>
     <main class="pt-16">
       <slot/>

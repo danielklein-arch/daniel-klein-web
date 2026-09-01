@@ -17,9 +17,9 @@ const mobileOpen = ref(false)
 
 <template>
   <header
-    class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl
-      bg-white/80 dark:bg-dk-bg/80
-      border-b border-slate-200/50 dark:border-slate-800/50">
+    class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md
+      bg-(--dk-bg)/85
+      border-b border-(--dk-line)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
@@ -37,39 +37,37 @@ const mobileOpen = ref(false)
             v-for="link in links"
             :key="link.to"
             :href="link.to"
-            class="px-3 py-2 text-sm font-medium
-              text-slate-600 dark:text-slate-400
-              hover:text-blue-600 dark:hover:text-blue-400
-              transition rounded-lg hover:bg-slate-100
-              dark:hover:bg-slate-800/50">
+            class="px-3 py-2 text-[0.72rem] font-medium tracking-[0.2em] uppercase
+              text-(--dk-dim) hover:text-(--dk-ink)
+              transition-colors">
             {{ link.label }}
           </a>
 
           <button
-            class="ml-2 p-2 rounded-lg inline-flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            class="ml-2 p-2 rounded-[4px] inline-flex items-center justify-center text-(--dk-dim) hover:text-(--dk-ink) hover:bg-(--dk-panel-hover) transition-colors"
             :aria-label="colorMode.value === 'dark' ? 'Světlý režim' : 'Tmavý režim'"
             @click="toggleColorMode">
             <UIcon
               :name="colorMode.value === 'dark' ? 'i-lucide-sun' : 'i-lucide-moon'"
-              class="w-5 h-5"/>
+              class="w-4 h-4"/>
           </button>
         </nav>
 
         <!-- Mobile toggle -->
         <div class="flex items-center gap-2 md:hidden">
           <button
-            class="p-2 rounded-lg inline-flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            class="p-2 rounded-[4px] inline-flex items-center justify-center text-(--dk-dim) hover:text-(--dk-ink) hover:bg-(--dk-panel-hover) transition-colors"
             @click="toggleColorMode">
             <UIcon
               :name="colorMode.value === 'dark' ? 'i-lucide-sun' : 'i-lucide-moon'"
-              class="w-5 h-5"/>
+              class="w-4 h-4"/>
           </button>
           <button
-            class="p-2 rounded-lg inline-flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            class="p-2 rounded-[4px] inline-flex items-center justify-center text-(--dk-dim) hover:text-(--dk-ink) hover:bg-(--dk-panel-hover) transition-colors"
             @click="mobileOpen = !mobileOpen">
             <UIcon
               :name="mobileOpen ? 'i-lucide-x' : 'i-lucide-menu'"
-              class="w-5 h-5"/>
+              class="w-4 h-4"/>
           </button>
         </div>
       </div>
@@ -89,7 +87,7 @@ const mobileOpen = ref(false)
             v-for="link in links"
             :key="link.to"
             :href="link.to"
-            class="block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/50 transition"
+            class="block px-3 py-2 text-[0.72rem] font-medium tracking-[0.2em] uppercase text-(--dk-dim) hover:text-(--dk-ink) transition-colors"
             @click="mobileOpen = false">
             {{ link.label }}
           </a>

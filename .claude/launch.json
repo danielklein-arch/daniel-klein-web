@@ -6,6 +6,12 @@
       "runtimeExecutable": "bun",
       "runtimeArgs": ["run", "dev"],
       "port": 3000
+    },
+    {
+      "name": "preview",
+      "runtimeExecutable": "bunx",
+      "runtimeArgs": ["wrangler", "dev", ".output/server/index.mjs", "--assets", ".output/public", "--port", "8787"],
+      "port": 8787
     }
   ]
 }

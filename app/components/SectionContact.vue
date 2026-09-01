@@ -28,7 +28,7 @@ const contactInfo = [
 <template>
   <section
     id="contact"
-    class="py-24 sm:py-32 bg-slate-50/50 dark:bg-dk-surface/40">
+    class="py-24 sm:py-32">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <SectionHeading
         index="04"
@@ -36,7 +36,7 @@ const contactInfo = [
         title="Pojďme spolupracovat"
         description="Máte projekt nebo nápad? Napište mi a probereme to."/>
 
-      <div class="grid lg:grid-cols-5 gap-12">
+      <div class="grid lg:grid-cols-5 gap-10">
         <!-- Contact info -->
         <div
           v-reveal
@@ -45,13 +45,13 @@ const contactInfo = [
             v-for="info in contactInfo"
             :key="info.label"
             class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center shrink-0">
+            <div class="w-10 h-10 rounded-[4px] bg-(--dk-panel-hover) border border-(--dk-line) flex items-center justify-center shrink-0">
               <UIcon
                 :name="info.icon"
-                class="w-5 h-5 text-blue-600 dark:text-blue-400"/>
+                class="w-4.5 h-4.5 text-(--dk-accent)"/>
             </div>
             <div>
-              <p class="text-xs font-medium text-slate-400 dark:text-slate-500 tracking-wide uppercase mb-1">
+              <p class="text-[0.66rem] font-medium text-(--dk-dim) tracking-[0.14em] uppercase mb-1">
                 {{ info.label }}
               </p>
               <component
@@ -60,20 +60,20 @@ const contactInfo = [
                 :class="[
                   'text-sm font-medium',
                   info.href
-                    ? 'text-blue-600 dark:text-blue-400 hover:underline'
-                    : 'text-slate-700 dark:text-slate-300',
+                    ? 'text-(--dk-accent) hover:underline'
+                    : 'text-(--dk-ink)',
                 ]">
                 {{ info.value }}
               </component>
             </div>
           </div>
 
-          <!-- CTA card -->
-          <div class="mt-auto p-6 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-600 text-white">
-            <h3 class="font-semibold mb-2">
+          <!-- CTA panel -->
+          <div class="panel panel--accent mt-auto p-6">
+            <h3 class="text-sm font-semibold text-(--dk-ink) mb-2">
               Rychlá konzultace zdarma
             </h3>
-            <p class="text-sm text-blue-100 leading-relaxed">
+            <p class="text-[0.82rem] text-(--dk-dim) leading-relaxed">
               Nevíte, jestli potřebujete nový web nebo stačí vylepšit stávající? Ozvěte se — poradím nezávazně.
             </p>
           </div>
@@ -84,7 +84,7 @@ const contactInfo = [
           v-reveal="{ delay: 150 }"
           class="lg:col-span-3">
           <form
-            class="rounded-2xl bg-white dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/50 p-8 space-y-6"
+            class="panel p-7 sm:p-8 space-y-6"
             @submit.prevent="handleSubmit">
             <div class="grid sm:grid-cols-2 gap-6">
               <UFormField
@@ -119,8 +119,8 @@ const contactInfo = [
                 class="w-full"/>
             </UFormField>
 
-            <div class="flex items-center justify-between">
-              <p class="text-xs text-slate-400 dark:text-slate-500">
+            <div class="flex items-center justify-between pt-4 hairline-dashed">
+              <p class="text-xs text-(--dk-dim)">
                 Odpovím do 24 hodin
               </p>
               <UButton
@@ -128,7 +128,7 @@ const contactInfo = [
                 size="lg"
                 color="primary"
                 :disabled="submitted"
-                class="px-8 bg-gradient-to-br from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white dark:text-dk-bg font-semibold">
+                class="px-8 font-semibold rounded-[4px]">
                 <template v-if="submitted">
                   <UIcon
                     name="i-lucide-check"

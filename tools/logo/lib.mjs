@@ -48,7 +48,7 @@ export function textLayout(font, text, size, tracking = 0) {
 export function pathData(path) {
   // opentype.js 2.0 toPathData() emits NaN tokens (serializer bug) — build the data ourselves
   const r = n => Math.round(n * 1000) / 1000
-  return path.commands.map((c) => {
+  return path.commands.map(c => {
     switch (c.type) {
       case 'M': return `M${r(c.x)} ${r(c.y)}`
       case 'L': return `L${r(c.x)} ${r(c.y)}`
@@ -105,7 +105,7 @@ export function markGlyphs(theme, size, { mono = null } = {}) {
   const g = `<g transform="translate(${(-box.x1).toFixed(2)},${(-top).toFixed(2)})">`
     + `<g fill="${ink}">${glyphs.paths.map(p => `<path d="${pathData(p.path)}"/>`).join('')}</g>`
     + `<rect class="cursor" x="${cx.toFixed(2)}" y="${cy.toFixed(2)}" width="${cw.toFixed(2)}" height="${ch.toFixed(2)}" fill="${cursor}"/>`
-    + `</g>`
+    + '</g>'
   return { g, w, h, baseline: -top }
 }
 

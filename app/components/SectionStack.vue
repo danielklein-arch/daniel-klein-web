@@ -7,7 +7,7 @@ const stack = [
 
 <template>
   <div
-    class="relative border-y border-slate-200/60 dark:border-slate-800/60 bg-slate-50/50 dark:bg-dk-surface/60 overflow-hidden py-5"
+    class="relative border-y border-(--dk-line) bg-(--dk-panel)/60 overflow-hidden py-4"
     aria-hidden="true">
     <div class="dk-marquee flex w-max items-center">
       <template
@@ -17,13 +17,13 @@ const stack = [
           v-for="tech in stack"
           :key="`${copy}-${tech}`"
           class="flex items-center shrink-0">
-          <span class="px-6 text-sm font-medium tracking-[0.2em] uppercase text-slate-400 dark:text-slate-500">{{ tech }}</span>
-          <span class="text-cyan-500/60 dark:text-cyan-400/40 text-xs">◆</span>
+          <span class="px-6 text-[0.72rem] font-medium tracking-[0.2em] uppercase text-(--dk-dim)">{{ tech }}</span>
+          <span class="text-(--dk-accent)/50 text-[0.66rem]">//</span>
         </span>
       </template>
     </div>
     <!-- edge fades -->
-    <div class="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white dark:from-dk-bg to-transparent"/>
-    <div class="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white dark:from-dk-bg to-transparent"/>
+    <div class="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-(--dk-bg) to-transparent"/>
+    <div class="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-(--dk-bg) to-transparent"/>
   </div>
 </template>

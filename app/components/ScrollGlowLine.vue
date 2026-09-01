@@ -1,9 +1,8 @@
 <script setup lang="ts">
-// Glowing line meandering down the whole page, drawn progressively by scroll.
-// Sits at z-0 under section content; translucent surfaces let it shine through.
+// Blueprint trace — thin accent line meandering down the page, drawn by scroll.
+// Sits at z-0 under section content; no glow, technical-drawing feel.
 const d = ref('')
 const height = ref(0)
-const gradId = useId()
 const wrapRef = ref<HTMLElement>()
 const corePath = ref<SVGPathElement>()
 const pathLen = ref(0)
@@ -22,17 +21,8 @@ function build() {
   const cx = w / 2
   const amp = Math.min(w * 0.38, 560)
   const seg = 1150
-  // start at the hero watermark's K leg, so the line flows out of the logo
-  const wrapTop = wrapRef.value!.getBoundingClientRect().top + window.scrollY
-  const anchor = document.getElementById('dk-line-anchor')
-  let startX = cx + amp * 0.6
+  const startX = cx + amp * 0.6
   startY = window.innerHeight * 0.75
-  if (anchor) {
-    const r = anchor.getBoundingClientRect()
-    startX = r.left + window.scrollX
-    // subtract the hero watermark parallax (0.28 × scrollY) in case we build mid-page
-    startY = r.top + window.scrollY - wrapTop - window.scrollY * 0.28
-  }
   let path = `M ${startX} ${startY}`
   let x = startX
   let y = startY
@@ -118,72 +108,26 @@ onBeforeUnmount(() => {
     <svg
       v-if="d"
       class="w-full h-full">
-      <defs>
-        <linearGradient
-          :id="gradId"
-          gradientUnits="userSpaceOnUse"
-          x1="0"
-          y1="0"
-          x2="0"
-          :y2="height">
-          <stop
-            offset="0"
-            stop-color="#3b82f6"/>
-          <stop
-            offset="0.45"
-            stop-color="#22d3ee"/>
-          <stop
-            offset="0.75"
-            stop-color="#3b82f6"/>
-          <stop
-            offset="1"
-            stop-color="#22d3ee"/>
-        </linearGradient>
-      </defs>
-      <!-- wide glow halo -->
-      <path
-        :d="d"
-        fill="none"
-        :stroke="`url(#${gradId})`"
-        stroke-width="14"
-        stroke-linecap="round"
-        class="opacity-25 dark:opacity-35 blur-[12px]"
-        :stroke-dasharray="pathLen"
-        :stroke-dashoffset="dashOffset"/>
-      <!-- core line -->
+      <!-- trace line -->
       <path
         ref="corePath"
         :d="d"
         fill="none"
-        :stroke="`url(#${gradId})`"
-        stroke-width="3.5"
-        stroke-linecap="round"
-        class="opacity-45 dark:opacity-70"
+        stroke="var(--dk-accent)"
+        stroke-width="1.5"
+        stroke-linecap="square"
+        class="opacity-40 dark:opacity-50"
         :stroke-dasharray="pathLen"
         :stroke-dashoffset="dashOffset"/>
-      <!-- scroll tip point -->
-      <g v-if="tip">
-        <circle
-          :cx="tip.x"
-          :cy="tip.y"
-          r="14"
-          fill="#22d3ee"
-          class="opacity-30 blur-[8px]"/>
-        <circle
-          :cx="tip.x"
-          :cy="tip.y"
-          r="5"
-          fill="#22d3ee"
-          class="opacity-90"/>
-        <circle
-          :cx="tip.x"
-          :cy="tip.y"
-          r="9"
-          fill="none"
-          stroke="#22d3ee"
-          stroke-width="1.5"
-          class="opacity-40 animate-ping [transform-origin:center] [transform-box:fill-box]"/>
-      </g>
+      <!-- tip: small blueprint cursor square -->
+      <rect
+        v-if="tip"
+        :x="tip.x - 3"
+        :y="tip.y - 3"
+        width="6"
+        height="6"
+        fill="var(--dk-accent)"
+        class="opacity-80"/>
     </svg>
   </div>
 </template>

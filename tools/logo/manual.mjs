@@ -83,7 +83,7 @@ const pageLogo = (() => {
   const labels = ['COMPACT', 'ICON', 'TILE', 'MONO']
   for (let i = 0; i < cells; i++) {
     const x = M + i * (cellW + 28)
-    if (bgs[i]) g += `<rect x="${x}" y="${rowY}" width="${cellW}" height="${rowH}" rx="14" fill="${bgs[i]}"${bgs[i] === '#ffffff' ? ` stroke="#d5dde6" stroke-width="2"` : ''}/>`
+    if (bgs[i]) g += `<rect x="${x}" y="${rowY}" width="${cellW}" height="${rowH}" rx="14" fill="${bgs[i]}"${bgs[i] === '#ffffff' ? ' stroke="#d5dde6" stroke-width="2"' : ''}/>`
     g += label(labels[i], x, rowY + rowH + 20)
   }
   // compact — scaled to fit the cell
@@ -97,7 +97,7 @@ const pageLogo = (() => {
     g += `<g transform="translate(${x0.toFixed(2)},${y0.toFixed(2)}) scale(${s.toFixed(3)})">`
       + `<g transform="translate(0,${(-Ts / 2).toFixed(2)})">${tileG(Ts)}</g>`
       + `<g transform="translate(${Ts + 18},${(-wm.h / 2).toFixed(2)})">${wm.g}</g>`
-      + `</g>`
+      + '</g>'
   }
   // icon (bare mark)
   {

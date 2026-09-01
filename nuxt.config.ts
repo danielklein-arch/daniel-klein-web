@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui', '@nuxt/fonts', '@nuxt/icon', '@nuxt/eslint'],
+  modules: ['@nuxt/ui', '@nuxt/icon', '@nuxt/eslint'],
 
   app: {
     head: {
@@ -10,9 +10,10 @@ export default defineNuxtConfig({
         { property: 'og:title', content: 'Daniel Klein — IT Specialist' },
         { property: 'og:description', content: 'Web development, infrastruktura a IT řešení na míru.' },
         { property: 'og:url', content: 'https://kleindaniel.com' },
-        { property: 'og:image', content: 'https://kleindaniel.com/og-image.png' },
+        { property: 'og:image', content: 'https://kleindaniel.com/og-image.png?v=2' },
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:image', content: 'https://kleindaniel.com/og-image.png' },
+        { name: 'twitter:image', content: 'https://kleindaniel.com/og-image.png?v=2' },
+        { name: 'theme-color', content: '#0a0e13' },
       ],
       link: [
         { rel: 'canonical', href: 'https://kleindaniel.com' },
@@ -57,7 +58,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   colorMode: {
-    preference: 'system',
+    preference: 'dark',
     fallback: 'dark',
   },
 
@@ -71,12 +72,5 @@ export default defineNuxtConfig({
     config: {
       stylistic: true,
     },
-  },
-
-  fonts: {
-    families: [
-      { name: 'Clash Display', provider: 'fontshare', weights: [600, 700] },
-      { name: 'General Sans', provider: 'fontshare', weights: [400, 500, 600, 700] },
-    ],
   },
 })

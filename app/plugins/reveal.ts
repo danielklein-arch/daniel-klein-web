@@ -5,6 +5,12 @@ export default defineNuxtPlugin(nuxtApp => {
     mounted(el: HTMLElement, binding) {
       el.classList.add('reveal')
       if (binding.value?.delay) el.style.transitionDelay = `${binding.value.delay}ms`
+      // already in viewport at mount (anchor deep-links): show immediately, don't wait for IO
+      const r = el.getBoundingClientRect()
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        el.classList.add('revealed')
+        return
+      }
       const io = new IntersectionObserver(([entry]) => {
         if (entry?.isIntersecting) {
           el.classList.add('revealed')

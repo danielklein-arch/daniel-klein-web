@@ -1,67 +1,47 @@
 <script setup lang="ts">
-// Monogram paths generated from Clash Display 700 via tools/logo/generate.mjs
+// dk_ tile — paths generated from JetBrains Mono Bold via tools/logo/generate.mjs
+// Tile stays dark in both modes (spec: znak je samonosný)
 withDefaults(defineProps<{
   showName?: boolean
-  glow?: boolean
   animated?: boolean
-}>(), { showName: false, glow: true, animated: false })
+}>(), { showName: false, animated: false })
 </script>
 
 <template>
-  <span class="inline-flex items-center gap-[0.55em]">
-    <!-- viewBox padded by half the shadow height — optical center between letters and full ink -->
+  <span class="inline-flex items-center gap-[0.7em]">
     <svg
-      viewBox="0 -4.5 162.1 80.5"
-      class="h-[1.55em] w-auto"
-      :class="{ 'dk-glow': glow, 'dk-animated': animated }"
-      aria-label="DK">
-      <defs>
-        <linearGradient
-          id="dk-grad-d"
-          x1="0"
-          y1="0"
-          x2="1"
-          y2="1">
-          <stop
-            offset="0"
-            class="[stop-color:#2563eb] dark:[stop-color:#3b82f6]"/>
-          <stop
-            offset="1"
-            class="[stop-color:#0891b2] dark:[stop-color:#22d3ee]"/>
-        </linearGradient>
-        <linearGradient
-          id="dk-grad-k"
-          x1="0"
-          y1="0"
-          x2="1"
-          y2="1">
-          <stop
-            offset="0"
-            class="[stop-color:#0891b2] dark:[stop-color:#22d3ee]"/>
-          <stop
-            offset="1"
-            class="[stop-color:#06b6d4] dark:[stop-color:#67e8f9]"/>
-        </linearGradient>
-      </defs>
-      <g transform="translate(4.1,67)">
-        <g
-          class="dk-logo-shadow fill-[#dbeafe] dark:fill-[#0f2547]"
-          transform="translate(6,9)">
-          <path d="M38 0L4.10 0L4.10-67L38-67Q54.70-67 64.40-58.15Q74.10-49.30 74.10-33.50Q74.10-17.70 64.40-8.85Q54.70 0 38 0M38-50.10L22.90-50.10L22.90-16.90L38-16.90Q43-16.90 45.65-17.35Q48.30-17.80 50.40-19.50Q52.50-21.20 53.25-24.50Q54-27.80 54-33.50Q54-39.20 53.25-42.50Q52.50-45.80 50.40-47.50Q48.30-49.20 45.65-49.65Q43-50.10 38-50.10"/>
-          <path d="M107.90-23.80L107.90 0L89.10 0L89.10-67L107.90-67L107.90-42.10L121.40-42.10L137.70-67L160.20-67L137-34.10L159.70 0L137.20 0L121.60-23.80"/>
-        </g>
-        <g class="dk-logo-letters">
-          <path
-            fill="url(#dk-grad-d)"
-            d="M38 0L4.10 0L4.10-67L38-67Q54.70-67 64.40-58.15Q74.10-49.30 74.10-33.50Q74.10-17.70 64.40-8.85Q54.70 0 38 0M38-50.10L22.90-50.10L22.90-16.90L38-16.90Q43-16.90 45.65-17.35Q48.30-17.80 50.40-19.50Q52.50-21.20 53.25-24.50Q54-27.80 54-33.50Q54-39.20 53.25-42.50Q52.50-45.80 50.40-47.50Q48.30-49.20 45.65-49.65Q43-50.10 38-50.10"/>
-          <path
-            fill="url(#dk-grad-k)"
-            d="M107.90-23.80L107.90 0L89.10 0L89.10-67L107.90-67L107.90-42.10L121.40-42.10L137.70-67L160.20-67L137-34.10L159.70 0L137.20 0L121.60-23.80"/>
-        </g>
+      viewBox="0 0 512 512"
+      class="h-[1.9em] w-auto"
+      aria-label="dk_">
+      <rect
+        width="512"
+        height="512"
+        rx="115.2"
+        fill="#10161e"/>
+      <rect
+        x="4.61"
+        y="4.61"
+        width="502.78"
+        height="502.78"
+        rx="110.6"
+        fill="none"
+        stroke="#1f2937"
+        stroke-width="9.22"/>
+      <g transform="translate(94.07,311.75)">
+        <path
+          fill="#d7e0ea"
+          d="M46.08 1.843L46.08 1.843Q31.334 1.843 22.211 -8.663Q13.087 -19.169 13.087 -36.864L13.087 -36.864L13.087 -64.328Q13.087 -82.207 22.118 -92.713Q31.15 -103.219 46.08 -103.219L46.08 -103.219Q56.586 -103.219 63.867 -97.874Q71.148 -92.529 74.097 -82.944L74.097 -82.944L73.359 -106.168L73.359 -134.554L96.399 -134.554L96.399 0L73.912 0L73.912 -18.432Q71.148 -8.847 63.959 -3.502Q56.771 1.843 46.08 1.843M54.743 -18.063L54.743 -18.063Q63.59 -18.063 68.475 -23.409Q73.359 -28.754 73.359 -38.523L73.359 -38.523L73.359 -62.853Q73.359 -72.622 68.475 -77.967Q63.59 -83.313 54.743 -83.313L54.743 -83.313Q45.896 -83.313 41.011 -78.52Q36.127 -73.728 36.127 -63.775L36.127 -63.775L36.127 -37.601Q36.127 -27.648 41.011 -22.856Q45.896 -18.063 54.743 -18.063M148.746 0L125.706 0L125.706 -134.554L148.746 -134.554L148.746 -61.563L164.966 -61.563L189.112 -101.376L214.733 -101.376L184.689 -52.347L215.839 0L189.665 0L164.966 -42.025L148.746 -42.025L148.746 0"/>
+        <rect
+          :class="{ 'dk-cursor-blink': animated }"
+          x="242.20"
+          y="6.45"
+          width="68.57"
+          height="16.59"
+          fill="#48b7e0"/>
       </g>
     </svg>
     <span
       v-if="showName"
-      class="font-display font-semibold text-[1em] text-slate-900 dark:text-slate-100">Daniel Klein</span>
+      class="font-medium text-[0.78em] tracking-[0.3em] uppercase text-(--dk-ink)">DANIEL<span class="mx-[0.15em] text-(--dk-accent)">//</span>KLEIN</span>
   </span>
 </template>

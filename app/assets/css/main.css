@@ -1,65 +1,144 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
-@theme {
-  --font-sans: 'General Sans', sans-serif;
-  --font-display: 'Clash Display', sans-serif;
+/* Fleet paleta — SoT: develit-infra apps/fleet/app/app.vue :root; akcent #48b7e0 osobní.
+   static = vynutit emit — default @theme emituje jen „použité" vars a Nuxt UI mapping
+   var(--color-dk-*, ) s prázdným fallbackem se jako použití nepočítá */
+@theme static {
+  --font-sans: ui-monospace, 'SF Mono', 'Cascadia Code', 'JetBrains Mono', Menlo, monospace;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'JetBrains Mono', Menlo, monospace;
 
-  /* brand */
-  --color-dk-bg: #070b14;
-  --color-dk-surface: #0d1320;
-  --color-dk-shadow: #0f2547;
+  /* akcent ramp ukotvený na #48b7e0 (Nuxt UI dark primary = shade 400, light = 500/600) */
+  --color-dk-50: #eef8fc;
+  --color-dk-100: #d9f0f9;
+  --color-dk-200: #b6e3f4;
+  --color-dk-300: #83d0ec;
+  --color-dk-400: #48b7e0;
+  --color-dk-500: #259ac6;
+  --color-dk-600: #0e7ea8;
+  --color-dk-700: #0f6689;
+  --color-dk-800: #135570;
+  --color-dk-900: #14475d;
+  --color-dk-950: #0c2e3e;
 }
 
+/* raw site tokeny — light v :root (light = absence třídy), dark v .dark */
 :root {
-  --color-blue-50: #eff6ff;
-  --color-blue-100: #dbeafe;
-  --color-blue-200: #bfdbfe;
-  --color-blue-300: #93c5fd;
-  --color-blue-400: #60a5fa;
-  --color-blue-500: #3b82f6;
-  --color-blue-600: #2563eb;
-  --color-blue-700: #1d4ed8;
-  --color-blue-800: #1e40af;
-  --color-blue-900: #1e3a5f;
-  --color-blue-950: #0f172a;
+  color-scheme: light;
+  --dk-bg: #f4f7fa;
+  --dk-panel: #ffffff;
+  --dk-panel-hover: #eef2f7;
+  --dk-line: #d5dde6;
+  --dk-ink: #1a232e;
+  --dk-dim: #5f6f81;
+  --dk-accent: #0e7ea8;
+  --dk-ok: #14a257;
+  --dk-warn: #a87413;
+  --dk-bad: #d43d3d;
+  --dk-plan: #4a6fa5;
+  --dk-grid: rgba(16, 42, 67, 0.05);
+
+  --ui-bg: var(--dk-bg);
+  --ui-bg-muted: var(--dk-panel);
+  --ui-bg-elevated: var(--dk-panel-hover);
+  --ui-bg-accented: var(--dk-line);
+  --ui-border: var(--dk-line);
+  --ui-border-muted: var(--dk-line);
+  --ui-border-accented: color-mix(in srgb, var(--dk-line) 70%, var(--dk-dim));
+  --ui-text-dimmed: var(--dk-dim);
+  --ui-text-muted: color-mix(in srgb, var(--dk-dim) 80%, var(--dk-ink));
+  --ui-text-toned: color-mix(in srgb, var(--dk-dim) 35%, var(--dk-ink));
+  --ui-text: var(--dk-ink);
+  --ui-text-highlighted: color-mix(in srgb, var(--dk-ink) 85%, black);
+}
+
+.dark {
+  color-scheme: dark;
+  --dk-bg: #0a0e13;
+  --dk-panel: #10161e;
+  --dk-panel-hover: #131b25;
+  --dk-line: #1f2937;
+  --dk-ink: #d7e0ea;
+  --dk-dim: #5f6f81;
+  --dk-accent: #48b7e0;
+  --dk-ok: #3ddc84;
+  --dk-warn: #f5b944;
+  --dk-bad: #ff5d5d;
+  --dk-plan: #6f9bd1;
+  --dk-grid: rgba(255, 255, 255, 0.025);
+
+  --ui-text-highlighted: color-mix(in srgb, var(--dk-ink) 85%, white);
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+/* blueprint grid + akcentový glow nahoře — atmosféra řídicího panelu (fleet verbatim) */
 body {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--font-mono);
+  color: var(--dk-ink);
+  background:
+    radial-gradient(60rem 24rem at 50% -8rem, color-mix(in srgb, var(--dk-accent) 7%, transparent), transparent 70%),
+    repeating-linear-gradient(0deg, transparent 0 47px, var(--dk-grid) 47px 48px),
+    repeating-linear-gradient(90deg, transparent 0 47px, var(--dk-grid) 47px 48px),
+    var(--dk-bg);
 }
 
-/* cyan glow for the monogram — dark mode only (spec: glow jen digitál/dark) */
-.dark .dk-glow {
-  filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.45));
+/* --- fleet komponentní slovník --- */
+
+.panel {
+  background: var(--dk-panel);
+  border: 1px solid var(--dk-line);
+  border-radius: 6px;
+}
+.panel--accent { border-left: 3px solid var(--dk-accent); }
+.panel--ok { border-left: 3px solid var(--dk-ok); }
+.panel--warn { border-left: 3px solid var(--dk-warn); }
+.panel--plan { border-left: 3px solid var(--dk-plan); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.12em 0.5em;
+  border-radius: 3px;
+  background: color-mix(in srgb, currentcolor 10%, transparent);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
-/* logo intro: letters fade in, shadow slides out (AppLogo animated prop) */
-.dk-animated .dk-logo-letters {
-  opacity: 0;
-  animation: dk-logo-fill 0.6s ease 0.1s forwards;
+.dot {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: currentcolor;
 }
-.dk-animated .dk-logo-shadow {
-  opacity: 0;
-  transform: translate(0, 0);
-  animation: dk-logo-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
+.dot--pulse {
+  animation: dk-pulse 2.4s ease-in-out infinite;
 }
-@keyframes dk-logo-fill {
-  to { opacity: 1; }
+@keyframes dk-pulse {
+  50% { opacity: 0.35; }
 }
-@keyframes dk-logo-shadow {
-  to { opacity: 1; transform: translate(6px, 9px); }
+
+.hairline-dashed {
+  border-top: 1px dashed var(--dk-line);
+}
+
+/* blikání kurzoru dk_ (AppLogo animated prop) */
+.dk-cursor-blink {
+  animation: dk-blink 1.1s steps(1) infinite;
+}
+@keyframes dk-blink {
+  50% { opacity: 0; }
 }
 
 /* v-reveal scroll entrances */
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease-out;
 }
 .reveal.revealed {
   opacity: 1;
@@ -68,12 +147,12 @@ body {
 
 /* hero load-in (no intersection needed above the fold) */
 @keyframes dk-hero-in {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: none; }
 }
 .hero-in {
   opacity: 0;
-  animation: dk-hero-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: dk-hero-in 0.45s ease-out forwards;
 }
 
 /* tech stack marquee */
@@ -88,6 +167,6 @@ body {
   .reveal { opacity: 1; transform: none; transition: none; }
   .hero-in { opacity: 1; animation: none; }
   .dk-marquee { animation: none; }
-  .dk-animated .dk-logo-letters { opacity: 1; animation: none; }
-  .dk-animated .dk-logo-shadow { opacity: 1; transform: translate(6px, 9px); animation: none; }
+  .dk-cursor-blink { animation: none; opacity: 1; }
+  .dot--pulse { animation: none; }
 }
