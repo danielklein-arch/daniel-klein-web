@@ -1,5 +1,5 @@
-// Shared brand geometry — fonts, palette, monogram construction.
-// Spec: docs/superpowers/specs/2026-06-11-brand-identity-design.md
+// Shared brand geometry — fonts, palette, dk_ mark construction.
+// Spec: docs/superpowers/specs/2026-09-01-brand-v2-fleet-design.md
 
 import { readFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
@@ -10,37 +10,45 @@ const here = dirname(fileURLToPath(import.meta.url))
 
 const loadFont = rel => opentype.parse(readFileSync(join(here, rel)).buffer)
 export const fonts = {
-  clash700: loadFont('fonts/ClashDisplay-700.ttf'),
-  clash600: loadFont('fonts/ClashDisplay-600.ttf'),
-  general500: loadFont('fonts/GeneralSans-500.ttf'),
-  general600: loadFont('fonts/GeneralSans-600.ttf'),
+  jb700: loadFont('fonts/JetBrainsMono-Bold.ttf'),
+  jb500: loadFont('fonts/JetBrainsMono-Medium.ttf'),
+  jb400: loadFont('fonts/JetBrainsMono-Regular.ttf'),
 }
 
 export const C = {
-  bgDark: '#070b14',
-  tileDark: '#0d1320',
-  dark: { d: ['#3b82f6', '#22d3ee'], k: ['#22d3ee', '#67e8f9'], shadow: '#0f2547', text: '#f1f5f9', muted: '#64748b' },
-  light: { d: ['#2563eb', '#0891b2'], k: ['#0891b2', '#06b6d4'], shadow: '#dbeafe', text: '#0f172a', muted: '#64748b' },
-  glow: 'rgba(34,211,238,.4)',
+  bg: '#0a0e13',
+  tile: '#10161e',
+  line: '#1f2937',
+  grid: 'rgba(255,255,255,.025)',
+  dark: { ink: '#d7e0ea', dim: '#5f6f81', accent: '#48b7e0' },
+  light: { ink: '#1a232e', dim: '#5f6f81', accent: '#0e7ea8' },
 }
 
-// --- text layout helpers (manual per-glyph positioning, tracking in px) ---
+// --- text layout helpers ---
 
-export function glyphPath(font, char, size, x, y) {
-  return font.getPath(char, x, y, size, { kerning: false })
+export function advOf(font, ch, size) {
+  return font.charToGlyph(ch).advanceWidth * (size / font.unitsPerEm)
 }
 
 export function textLayout(font, text, size, tracking = 0) {
-  // whole-string layout via opentype (per-glyph assembly corrupts some lowercase glyphs)
-  const opts = { kerning: true, letterSpacing: tracking / size }
-  const path = font.getPath(text, 0, 0, size, opts)
-  return { paths: [{ char: text, path }], width: font.getAdvanceWidth(text, size, opts) }
+  // per-glyph assembly: opentype.js 2.0 string shaping crashes on JB Mono GSUB
+  // (ccmp lookup 6.2 unsupported); mono font = no kerning, fixed advance, and
+  // '//' must not ligate anyway. Width includes trailing tracking (v1 semantics).
+  const scale = size / font.unitsPerEm
+  const path = new opentype.Path()
+  let x = 0
+  for (const ch of text) {
+    const glyph = font.charToGlyph(ch)
+    path.extend(glyph.getPath(x, 0, size))
+    x += glyph.advanceWidth * scale + tracking
+  }
+  return { paths: [{ char: text, path }], width: x }
 }
 
 export function pathData(path) {
   // opentype.js 2.0 toPathData() emits NaN tokens (serializer bug) — build the data ourselves
   const r = n => Math.round(n * 1000) / 1000
-  return path.commands.map(c => {
+  return path.commands.map((c) => {
     switch (c.type) {
       case 'M': return `M${r(c.x)} ${r(c.y)}`
       case 'L': return `L${r(c.x)} ${r(c.y)}`
@@ -70,54 +78,73 @@ export function textG(font, text, size, fill, x, y, tracking = 0) {
   return { g, width: t.width, height: box.h, box }
 }
 
-// --- monogram ---
-// size = font size of DK; returns group markup + metrics, origin at bbox top-left
+// --- dk_ mark ---
+// Glyphs "dk" (JB Mono Bold) + cursor rect in the third monospace cell.
+// size = font size; origin at content top-left; returns { g, w, h, baseline }
 
-// glow: only for raster outputs (OG) — browsers rasterize SVG filters at low res,
-// on the web the glow is applied via CSS drop-shadow instead
-export function monogram(theme, size, { shadow = true, glow = false, mono = null, idPrefix = 'm' } = {}) {
+export function markGlyphs(theme, size, { mono = null } = {}) {
   const t = C[theme] ?? C.dark
-  const gap = size * 0.10
-  const dxs = size * 0.06
-  const dys = size * 0.09
+  const font = fonts.jb700
+  const adv = advOf(font, 'd', size)
+  const glyphs = textLayout(font, 'dk', size)
+  const box = bbox(glyphs.paths.map(p => p.path))
 
-  const dPath = glyphPath(fonts.clash700, 'D', size, 0, 0)
-  const dAdv = (fonts.clash700.charToGlyph('D').advanceWidth / fonts.clash700.unitsPerEm) * size
-  const kPath = glyphPath(fonts.clash700, 'K', size, dAdv + gap, 0)
-  const box = bbox([dPath, kPath])
+  // cursor: underscore-style bar, centered in the third cell, just under the baseline
+  const cw = adv * 0.62
+  const ch = size * 0.09
+  const cx = adv * 2 + (adv - cw) / 2
+  const cy = size * 0.035
 
-  const dD = pathData(dPath)
-  const dK = pathData(kPath)
-  const pad = glow ? size * 0.25 : 0
-  const w = box.w + (shadow ? dxs : 0) + pad * 2
-  const h = box.h + (shadow ? dys : 0) + pad * 2
-  // translate so bbox top-left lands at (pad, pad)
-  const tx = -box.x1 + pad
-  const ty = -box.y1 + pad
+  const top = box.y1
+  const h = Math.max(box.y2, cy + ch) - top
+  // visual extent: glyph left bearing → cursor right edge, so centering is optical
+  const w = cx + cw - box.x1
+  const ink = mono ?? t.ink
+  const cursor = mono ?? t.accent
 
-  let defs = ''
-  let dFill, kFill
-  if (mono) {
-    dFill = kFill = mono
+  const g = `<g transform="translate(${(-box.x1).toFixed(2)},${(-top).toFixed(2)})">`
+    + `<g fill="${ink}">${glyphs.paths.map(p => `<path d="${pathData(p.path)}"/>`).join('')}</g>`
+    + `<rect class="cursor" x="${cx.toFixed(2)}" y="${cy.toFixed(2)}" width="${cw.toFixed(2)}" height="${ch.toFixed(2)}" fill="${cursor}"/>`
+    + `</g>`
+  return { g, w, h, baseline: -top }
+}
+
+// tile with the dk_ mark; kind: 'dark' (canonical) | 'accent' | 'small' (no stroke, for ≤32px favicons)
+export function tileG(S, kind = 'dark') {
+  const r = S * 0.225
+  const glyphSize = S * (kind === 'small' ? 0.5 : 0.36)
+  const strokeW = kind === 'small' ? 0 : S * 0.018
+  const m = markGlyphs('dark', glyphSize, { mono: kind === 'accent' ? C.bg : null })
+  let body = `<rect width="${S}" height="${S}" rx="${r.toFixed(1)}" fill="${kind === 'accent' ? C.dark.accent : C.tile}"/>`
+  if (strokeW) {
+    body += `<rect x="${(strokeW / 2).toFixed(2)}" y="${(strokeW / 2).toFixed(2)}" width="${(S - strokeW).toFixed(2)}" height="${(S - strokeW).toFixed(2)}" rx="${(r - strokeW / 2).toFixed(1)}" fill="none" stroke="${C.line}" stroke-width="${strokeW.toFixed(2)}"/>`
   }
-  else {
-    defs += `<linearGradient id="${idPrefix}-d" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${t.d[0]}"/><stop offset="1" stop-color="${t.d[1]}"/></linearGradient>`
-    defs += `<linearGradient id="${idPrefix}-k" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${t.k[0]}"/><stop offset="1" stop-color="${t.k[1]}"/></linearGradient>`
-    dFill = `url(#${idPrefix}-d)`
-    kFill = `url(#${idPrefix}-k)`
-  }
-  if (glow && !mono) {
-    defs += `<filter id="${idPrefix}-glow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="0" stdDeviation="${(size * 0.07).toFixed(1)}" flood-color="${C.glow}"/></filter>`
-  }
+  body += `<g transform="translate(${((S - m.w) / 2).toFixed(2)},${((S - m.h) / 2).toFixed(2)})">${m.g}</g>`
+  return body
+}
 
-  let g = `<g transform="translate(${tx.toFixed(2)},${ty.toFixed(2)})">`
-  if (shadow && !mono) {
-    g += `<g fill="${t.shadow}" transform="translate(${dxs.toFixed(2)},${dys.toFixed(2)})"><path d="${dD}"/><path d="${dK}"/></g>`
-  }
-  g += `<g${glow && !mono ? ` filter="url(#${idPrefix}-glow)"` : ''}><path fill="${dFill}" d="${dD}"/><path fill="${kFill}" d="${dK}"/></g>`
-  g += '</g>'
+// --- wordmark ---
+// DANIEL//KLEIN as three runs so the slashes take the accent fill.
+// Trailing letter-spacing of each run doubles as the gap to the next run.
 
-  return { defs, g, w, h, pad }
+export function wordmark(theme, size, { tracking = size * 0.32, mono = null, font = fonts.jb500 } = {}) {
+  const t = C[theme] ?? C.dark
+  const runs = [
+    ['DANIEL', mono ?? t.ink],
+    ['//', mono ?? t.accent],
+    ['KLEIN', mono ?? t.ink],
+  ]
+  let x = 0
+  const parts = []
+  for (const [text, fill] of runs) {
+    const run = textLayout(font, text, size, tracking)
+    parts.push({ x, fill, path: run.paths[0].path })
+    x += run.width
+  }
+  const box = bbox(parts.map(p => p.path))
+  const width = x - tracking
+  const g = `<g transform="translate(0,${(-box.y1).toFixed(2)})">${parts.map(p => `<g fill="${p.fill}" transform="translate(${p.x.toFixed(2)},0)"><path d="${pathData(p.path)}"/></g>`).join('')}</g>`
+  return { g, width, h: box.h, box }
 }
 
 export function svgDoc(w, h, defs, body, bg = null) {
