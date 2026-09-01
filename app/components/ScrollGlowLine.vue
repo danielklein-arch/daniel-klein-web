@@ -1,7 +1,9 @@
 <script setup lang="ts">
-// Blueprint trace — static decorative meander line down the page.
-// Deliberately no scroll-driven anything: per-frame SVG work janks FF/Safari.
+// Blueprint trace — meander line down the page. Scroll-driven clip-path reveal
+// (compositor-only) jen tam, kde je levný; Firefox ho rozbíjí a maluje na main
+// threadu → tam zůstává čára statická. Žádný per-frame JS nikde.
 const d = ref('')
+const reveal = ref(false)
 const wrapRef = ref<HTMLElement>()
 let ro: ResizeObserver | undefined
 let lastHeight = 0
@@ -34,6 +36,7 @@ function build() {
 }
 
 onMounted(() => {
+  reveal.value = CSS.supports('animation-timeline: scroll()') && !/Firefox/.test(navigator.userAgent)
   build()
   window.addEventListener('resize', build)
   ro = new ResizeObserver(() => {
@@ -55,7 +58,8 @@ onBeforeUnmount(() => {
     aria-hidden="true">
     <svg
       v-if="d"
-      class="w-full h-full">
+      class="w-full h-full"
+      :class="{ 'dk-trace-reveal': reveal }">
       <path
         :d="d"
         fill="none"

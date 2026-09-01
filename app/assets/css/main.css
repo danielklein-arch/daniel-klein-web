@@ -126,6 +126,20 @@ body {
   border-top: 1px dashed var(--dk-line);
 }
 
+/* blueprint trace: scroll-driven odhalení přes clip-path (kompozitor).
+   Třídu přidává JS jen mimo Firefox — Gecko animaci rozbíjí a jede po main threadu. */
+@supports (animation-timeline: scroll()) {
+  .dk-trace-reveal {
+    will-change: clip-path;
+    animation: dk-trace-reveal linear both;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes dk-trace-reveal {
+  from { clip-path: inset(0 0 calc(100% - 90vh) 0); }
+  to { clip-path: inset(0); }
+}
+
 /* blikání kurzoru dk_ (AppLogo animated prop) */
 .dk-cursor-blink {
   animation: dk-blink 1.1s steps(1) infinite;
