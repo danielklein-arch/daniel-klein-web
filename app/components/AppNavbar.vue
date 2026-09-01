@@ -17,8 +17,8 @@ const mobileOpen = ref(false)
 
 <template>
   <header
-    class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md
-      bg-(--dk-bg)/85
+    class="fixed top-0 left-0 right-0 z-50
+      bg-(--dk-bg)/95
       border-b border-(--dk-line)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
