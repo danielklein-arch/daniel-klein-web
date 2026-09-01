@@ -1,5 +1,6 @@
 {
   "name": "daniel-klein-web",
+  "account_id": "fcaeae5ec7bc0780660c3ba58bf5e613",
   "main": ".output/server/index.mjs",
   "compatibility_date": "2025-01-01",
   "assets": {
