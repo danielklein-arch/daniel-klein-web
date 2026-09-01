@@ -1,6 +1,6 @@
 <script setup lang="ts">
-// Blueprint trace — static meander line revealed by a scroll-driven clip-path
-// animation (compositor-only, no per-frame JS). Without support it's just fully drawn.
+// Blueprint trace — static decorative meander line down the page.
+// Deliberately no scroll-driven anything: per-frame SVG work janks FF/Safari.
 const d = ref('')
 const wrapRef = ref<HTMLElement>()
 let ro: ResizeObserver | undefined
@@ -55,7 +55,7 @@ onBeforeUnmount(() => {
     aria-hidden="true">
     <svg
       v-if="d"
-      class="w-full h-full dk-trace-reveal">
+      class="w-full h-full">
       <path
         :d="d"
         fill="none"
