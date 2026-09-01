@@ -9,7 +9,6 @@ useHead({
     <ScrollGlowLine/>
     <div class="relative">
       <SectionHero/>
-      <SectionStack/>
       <SectionAbout/>
       <SectionServices/>
       <SectionProjects/>

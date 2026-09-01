@@ -155,18 +155,9 @@ body {
   animation: dk-hero-in 0.45s ease-out forwards;
 }
 
-/* tech stack marquee */
-@keyframes dk-marquee {
-  to { transform: translateX(-50%); }
-}
-.dk-marquee {
-  animation: dk-marquee 36s linear infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
   .hero-in { opacity: 1; animation: none; }
-  .dk-marquee { animation: none; }
   .dk-cursor-blink { animation: none; opacity: 1; }
   .dot--pulse { animation: none; }
 }
